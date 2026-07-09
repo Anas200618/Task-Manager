@@ -1,0 +1,52 @@
+[
+  {
+    "model": "tasks.task",
+    "pk": 1,
+    "fields": {
+      "title": "Set up project repository",
+      "description": "Initialize the Django and React repositories with a base folder structure.",
+      "status": "done",
+      "created_at": "2026-01-01T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 2,
+    "fields": {
+      "title": "Design Task model",
+      "description": "Define the Task model with title, description, status, and created_at fields.",
+      "status": "done",
+      "created_at": "2026-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 3,
+    "fields": {
+      "title": "Build Task list API",
+      "description": "Implement GET /api/tasks/ with optional status filtering.",
+      "status": "in_progress",
+      "created_at": "2026-01-02T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 4,
+    "fields": {
+      "title": "Build React task form",
+      "description": "Create a form to add new tasks from the frontend.",
+      "status": "pending",
+      "created_at": "2026-01-02T11:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 5,
+    "fields": {
+      "title": "Write README",
+      "description": "",
+      "status": "pending",
+      "created_at": "2026-01-02T12:00:00Z"
+    }
+  }
+]
