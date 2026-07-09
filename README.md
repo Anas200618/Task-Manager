@@ -1,11 +1,56 @@
 # Task Manager
 
-A simple full-stack Task Manager application.
+> **Version:** 1.0.0  
+> **Project Type:** Full Stack Web Application  
+> **Backend:** Django + Django REST Framework  
+> **Frontend:** React  
+> **Database:** SQLite  
+> **Python:** 3.10+  
+> **Node.js:** 18+  
+> **License:** Educational / Assessment Project
 
-- **Backend:** Django + Django REST Framework, SQLite database
-- **Frontend:** React (single-page app), plain `fetch` calls, no styling framework
+---
 
-```
+## Overview
+
+Task Manager is a simple full-stack web application that allows users to create, view, filter, and update tasks.
+
+The backend is built using **Django** and **Django REST Framework**, exposing REST APIs consumed by a **React** single-page application. The project uses **SQLite** as its database and **django-cors-headers** to allow communication between the frontend and backend during development.
+
+This project was developed as part of a Full Stack Developer assessment.
+
+---
+
+## Features
+
+### Backend
+
+- Create tasks
+- Retrieve all tasks
+- Filter tasks by status
+- Update task status
+- Delete tasks
+- Input validation
+- Sample data seeding
+- RESTful API
+- SQLite database
+- CORS enabled for React frontend
+
+### Frontend
+
+- Create new tasks
+- Display all tasks
+- Filter tasks by status
+- Update task status using dropdown
+- Automatic refresh after task creation
+- Error handling for invalid requests
+- Simple and responsive user interface
+
+---
+
+## Project Structure
+
+```text
 task-manager/
 ├── backend/    Django project ("taskmanager") + "tasks" app
 └── frontend/   React app (create-react-app style)
@@ -13,9 +58,16 @@ task-manager/
 
 ---
 
-## 1. Backend (Django) — setup and run
+# Backend (Django)
 
-**Requirements:** Python 3.10+ and `pip`
+## Requirements
+
+- Python 3.10 or higher
+- pip
+
+---
+
+## Setup & Run
 
 ```bash
 cd backend
@@ -33,86 +85,263 @@ python manage.py migrate
 # 4. Seed the database with 5+ sample tasks (pending / in_progress / done)
 python manage.py seed_tasks
 
-# 5. Run the dev server
+# 5. Run the development server
 python manage.py runserver
 ```
 
-The API is now available at `http://localhost:8000`.
+The backend server will be available at:
 
-### Seeding sample data
-
-Two options are provided — either is enough on its own, `seed_tasks` is the
-recommended one since it's idempotent (safe to re-run) and doesn't require
-fixed primary keys:
-
-- **Management command (recommended):** `python manage.py seed_tasks`
-  (add `--clear` to wipe existing tasks first)
-- **Fixture (alternative):** `python manage.py loaddata sample_tasks`
-
-### API endpoints
-
-| Method | Endpoint                     | Description                              |
-|--------|-------------------------------|-------------------------------------------|
-| GET    | `/api/tasks/`                 | List all tasks                            |
-| GET    | `/api/tasks/?status=pending`  | List tasks filtered by status             |
-| POST   | `/api/tasks/`                 | Create a task (`title`, `description`)    |
-| GET    | `/api/tasks/<id>/`             | Retrieve a single task                    |
-| PATCH  | `/api/tasks/<id>/`             | Update a task (e.g. `{"status": "done"}`) |
-| DELETE | `/api/tasks/<id>/`             | Delete a task                             |
-
-Valid `status` values: `pending`, `in_progress`, `done`.
-
-- `GET /api/tasks/?status=invalid` → `400 Bad Request` with a JSON body like
-  `{"error": "Invalid status 'invalid'. Must be one of: done, in_progress, pending."}`
-- `POST /api/tasks/` with an empty/missing `title` → `400 Bad Request` with
-  field-level validation errors, e.g. `{"title": ["Title must not be empty."]}`
-
-An admin site is also available at `http://localhost:8000/admin/` if you
-create a superuser with `python manage.py createsuperuser`.
+```
+http://localhost:8000
+```
 
 ---
 
-## 2. Frontend (React) — setup and run
+## Sample Data
 
-**Requirements:** Node.js 18+ and `npm`
+The project includes sample data so the application is immediately usable after setup.
+
+Two methods are available:
+
+### Recommended
+
+```bash
+python manage.py seed_tasks
+```
+
+This command is idempotent and can safely be executed multiple times.
+
+To clear existing tasks before seeding:
+
+```bash
+python manage.py seed_tasks --clear
+```
+
+### Alternative
+
+```bash
+python manage.py loaddata sample_tasks
+```
+
+---
+
+## REST API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/tasks/` | Retrieve all tasks |
+| GET | `/api/tasks/?status=pending` | Retrieve pending tasks |
+| POST | `/api/tasks/` | Create a new task |
+| GET | `/api/tasks/<id>/` | Retrieve a single task |
+| PATCH | `/api/tasks/<id>/` | Update task information |
+| DELETE | `/api/tasks/<id>/` | Delete a task |
+
+---
+
+## Status Values
+
+Supported task status values:
+
+```
+pending
+in_progress
+done
+```
+
+---
+
+## Validation
+
+### Title
+
+- Required
+- Cannot be empty
+- Cannot contain only whitespace
+
+Example response:
+
+```json
+{
+    "title": [
+        "Title must not be empty."
+    ]
+}
+```
+
+---
+
+### Status Filter
+
+Example:
+
+```
+GET /api/tasks/?status=invalid
+```
+
+Response:
+
+```json
+{
+    "error": "Invalid status 'invalid'. Must be one of: done, in_progress, pending."
+}
+```
+
+Returns:
+
+```
+400 Bad Request
+```
+
+---
+
+## Django Admin
+
+Create an administrator account:
+
+```bash
+python manage.py createsuperuser
+```
+
+Then access:
+
+```
+http://localhost:8000/admin/
+```
+
+---
+
+# Frontend (React)
+
+## Requirements
+
+- Node.js 18 or higher
+- npm
+
+---
+
+## Setup & Run
 
 ```bash
 cd frontend
+
 npm install
+
 npm start
 ```
 
-The app runs at `http://localhost:3000` and talks to the API at
-`http://localhost:8000` (hardcoded in `src/api.js`, as specified).
+The frontend application runs at:
 
-Make sure the Django server (step 1) is running first, otherwise the task
-list and form will show connection errors.
+```
+http://localhost:3000
+```
+
+The React application communicates with:
+
+```
+http://localhost:8000
+```
+
+The API base URL is hardcoded in:
+
+```
+src/api.js
+```
+
+> Ensure the Django backend server is running before starting the React application.
 
 ---
 
-## 3. Assumptions and decisions
+# Technologies Used
 
-- **Django REST Framework** was used (allowed, not mandatory) to get request
-  parsing, serialization, and validation with less boilerplate than plain
-  Django views.
-- **Status filter validation** happens on `GET /api/tasks/`: an unrecognized
-  `?status=` value returns `400` with a descriptive error message, as
-  required. No `status` param at all returns all tasks.
-- **Title validation**: the `title` field is required and cannot be blank or
-  whitespace-only; this is enforced by the serializer and returns a `400`
-  with a field-specific message.
-- **Status validation on write** (`POST`/`PATCH`): DRF's `ChoiceField`
-  (generated from the model's `choices`) automatically rejects any value
-  that isn't `pending`, `in_progress`, or `done` with a `400` response.
-- **CORS**: `django-cors-headers` is configured to allow only
-  `http://localhost:3000` (the default CRA dev server origin), per the spec.
-- **No authentication**: the API is fully open, as explicitly out of scope.
-- **No pagination**: `GET /api/tasks/` returns a plain JSON array (pagination
-  disabled in `REST_FRAMEWORK` settings) to keep the frontend simple.
-- **Status updates**: changing the dropdown in the task list immediately
-  fires a `PATCH /api/tasks/<id>/` and updates the UI optimistically once the
-  API confirms the change (no separate "Save" button, per the spec).
-- **Styling**: kept intentionally minimal/functional (a small shared
-  `index.css`), no CSS framework, per the spec.
-- **Database**: SQLite only, using Django's default file-based engine — no
-  other database configuration is included.
+## Backend
+
+- Python
+- Django
+- Django REST Framework
+- SQLite
+- django-cors-headers
+
+## Frontend
+
+- React
+- JavaScript (ES6)
+- HTML5
+- CSS3
+- Fetch API
+
+---
+
+# Assumptions & Design Decisions
+
+- Django REST Framework is used to simplify API development, serialization, validation, and request handling.
+- Task status is restricted to three valid values:
+  - `pending`
+  - `in_progress`
+  - `done`
+- Invalid status filters return **400 Bad Request** with a descriptive error message.
+- Task titles are mandatory and cannot be blank or whitespace-only.
+- Status validation is automatically handled through Django model choices and DRF serializer validation.
+- CORS is configured using **django-cors-headers** to allow requests only from:
+
+```
+http://localhost:3000
+```
+
+- Authentication and authorization are intentionally omitted as they are outside the project scope.
+- Pagination is disabled to keep the frontend implementation simple.
+- Status updates are applied immediately when the dropdown value changes by sending a `PATCH` request.
+- The UI is intentionally minimal with no CSS framework to focus on functionality.
+- SQLite is used as the project's only database.
+
+---
+
+# Running the Project
+
+## Start Backend
+
+```bash
+cd backend
+
+python manage.py runserver
+```
+
+---
+
+## Start Frontend
+
+```bash
+cd frontend
+
+npm start
+```
+
+---
+
+# Default URLs
+
+| Service | URL |
+|----------|-----|
+| Django Backend | http://localhost:8000 |
+| React Frontend | http://localhost:3000 |
+| Django Admin | http://localhost:8000/admin/ |
+| Task API | http://localhost:8000/api/tasks/ |
+
+---
+
+# Project Notes
+
+- This project follows a simple REST architecture.
+- No authentication or user management is implemented.
+- SQLite is used for simplicity and portability.
+- Sample tasks are included through a management command and fixture.
+- The project is intended for local development and assessment purposes.
+
+---
+
+## Author
+
+**Task Manager**
+
+Version **1.0.0**
+
+Developed as a Full Stack Developer assessment using **Django**, **Django REST Framework**, **React**, and **SQLite**.
